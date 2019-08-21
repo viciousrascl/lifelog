@@ -38,7 +38,6 @@ class Tagblog extends \Phalcon\Mvc\Model
         $this->setSchema("lifelog");
         $this->setSource("tagblog");
         $this->belongsTo('blog_i', 'lifelog\Blog', 'blog_id', ['alias' => 'Blogi']);
-        $this->belongsTo('tag_i', 'lifelog\Tag', 'Tag_id', ['alias' => 'Tagi']);
     }
 
     //Setting up basic functions

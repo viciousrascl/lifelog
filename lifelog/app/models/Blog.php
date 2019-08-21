@@ -99,7 +99,6 @@ class Blog extends \Phalcon\Mvc\Model
         $this->hasMany('blog_id', 'lifelog\Comment', 'for_blog', ['alias' => 'Comment']);
         $this->hasMany('blog_id', 'lifelog\Tagblog', 'blog', ['alias' => 'Tagblog']);
         $this->belongsTo('created_by', 'lifelog\User', 'user_id', ['alias' => 'User']);
-		$this->hasManyToMany('blog_id','lifelog\tagblog','tag_i','blog_i','lifelog\tag','tag_id',['alias' => 'Tag_i']);
     }
 
     //Setting up basic functions
