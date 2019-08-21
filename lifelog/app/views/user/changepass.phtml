@@ -1,0 +1,29 @@
+<?= $this->getContent() ?>
+<div class="page-header">
+    <h3>Update Password</h3>
+	</div>
+<?= $this->tag->form(['user/updatepass', 'role' => 'form']) ?>
+    <fieldset>
+		<div class="form-group">
+            <label for="username">Username</label>
+            <div class="controls">
+                <?= $this->tag->textField(['username', 'class' => 'form-control']) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username">Current Password</label>
+            <div class="controls">
+                <?= $this->tag->passwordField(['dpass', 'class' => 'form-control']) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password">New Password</label>
+            <div class="controls">
+                <?= $this->tag->passwordField(['password', 'class' => 'form-control']) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <?= $this->tag->submitButton(['Update', 'class' => 'btn btn-primary btn-large']) ?>
+        </div>
+    </fieldset>
+<?= $this->tag->endform() ?>

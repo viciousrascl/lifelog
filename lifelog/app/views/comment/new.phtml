@@ -1,0 +1,69 @@
+<?php
+/**
+ * @var \Phalcon\Mvc\View\Engine\Php $this
+ */
+?>
+
+<div class="row">
+    <nav>
+        <ul class="pager">
+            <li class="previous"><?php echo $this->tag->linkTo(["comment", "Go Back"]) ?></li>
+        </ul>
+    </nav>
+</div>
+
+<div class="page-header">
+    <h1>
+        Create comment
+    </h1>
+</div>
+
+<?php echo $this->getContent(); ?>
+
+<?php
+    echo $this->tag->form(
+        [
+            "comment/create",
+            "autocomplete" => "off",
+            "class" => "form-horizontal"
+        ]
+    );
+?>
+
+<!--input form-->
+<div class="form-group">
+    <label for="fieldCommentBy" class="col-sm-2 control-label">Comment Of By</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["comment_by", "type" => "number", "class" => "form-control", "id" => "fieldCommentBy"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldForBlog" class="col-sm-2 control-label">For Of Blog</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["for_blog", "type" => "number", "class" => "form-control", "id" => "fieldForBlog"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldCommentData" class="col-sm-2 control-label">Comment Of Data</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["comment_data", "size" => 30, "class" => "form-control", "id" => "fieldCommentData"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldCommentedOn" class="col-sm-2 control-label">Commented Of On</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["commented_on", "size" => 30, "class" => "form-control", "id" => "fieldCommentedOn"]) ?>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <?php echo $this->tag->submitButton(["Save", "class" => "btn btn-default"]) ?>
+    </div>
+</div>
+
+<?php echo $this->tag->endForm(); ?>

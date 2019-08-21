@@ -1,0 +1,86 @@
+<?php
+/**
+ * @var \Phalcon\Mvc\View\Engine\Php $this
+ */
+?>
+
+<?php use Phalcon\Tag; ?>
+<?php use lifelog\user; ?>
+<?php echo $this->getContent(); ?>
+<?php $session = \Phalcon\Di::getDefault()->get('session'); $auth = $this->session->get('auth'); ?>
+<?php $user = user::findfirst($auth['user_id']); ?>
+    <div class="container-fluid gedf-wrapper ">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+						<div class="h7"><img class="img-responsive center-block" 
+		        height="90 vh" width="180 vw" 
+		        src="data:image/jpeg;base64,<?php echo $user->getProfilePic() ?>">
+                        </div>
+                        <div class="h5"><?php echo "<h4>User : </h4>" . " " . $user->getusername()?></div>
+                        <div class="h7 text-muted"><?php echo $user->getfirstname() . " " . $user->getlastname() ?></div>
+                    </div>
+                </div>
+            </div>
+            <div class="container col-md-9 gedf-main">
+                <?php foreach ($page->items as $blog): ?>
+                <!--- \\\\\\\Post-->
+				<div class = "container-fluid well"" style="padding: 10px; style="border:1px solid black;"" >
+                <div class="card gedf-card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="mr-2 d-flex justify-content-between align-items-center">
+                                   <a class="card-link" href="<?php echo $this->url->getBaseUri()?>/blog/show/<?= $blog->getBlogId()?>" ><img class="rounded-circle d-flex justify-content-between align-items-center" width="500" 
+										src="data:image/jpeg;base64,<?php echo $blog->getBlogImage() ?>"></a>
+                                </div>
+                                <div class="ml-2">
+                                    <div class="h5 m-0"><?php echo $blog->user->getusername() ?></div>
+                                    <div class="h7 text-muted"><?php echo $blog->user->getfirstname() . " " . $blog->user->getlastname() ?></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i><?php echo $blog->getBlogCreatedOn() ?></div>
+                        <a class="card-link" href="<?php echo $this->url->getBaseUri()?>/blog/show/<?= $blog->getBlogId()?>" >
+                            <h5 class="card-title"><?php echo $blog->getTitle() ?></h5>
+                        </a>
+                    </div>
+                    <div class="card-footer">
+						<?php $bloger = $blog->getCreatedBy()?>
+						<?php if($auth['user_id'] == $bloger):?>
+                        <!-- This Might Break -->
+                        <?php echo $this->tag->Button->linkTo(["blog/edit/" . $blog->getBlogId(), "Edit"]); ?>
+                        <?php echo $this->tag->Button->linkTo(["blog/delete/" . $blog->getBlogId(), "Delete"]); ?>
+						<?php endif; ?>
+                        
+                    </div>
+                </div>
+				</div>
+				<hr>
+                
+                <!-- Post /////-->
+				 <?php endforeach; ?>
+				 <div class="row">
+					<div class="col-sm-1">
+						<p class="pagination" style="line-height: 1.42857;padding: 6px 12px;">
+							<?php echo $page->current, "/", $page->total_pages ?>
+						</p>
+					</div>
+					<div class="col-sm-11">
+						<nav>
+							<ul class="pagination">
+								<li><?php echo $this->tag->linkTo(["blog/search", "First", 'class' => 'page-link']) ?></li>
+								<li><?php echo $this->tag->linkTo(["blog/search?page=" . $page->before, "Previous", 'class' => 'page-link']) ?></li>
+								<li><?php echo $this->tag->linkTo(["blog/search?page=" . $page->next, "Next", 'class' => 'page-link']) ?></li>
+								<li><?php echo $this->tag->linkTo(["blog/search?page=" . $page->last, "Last", 'class' => 'page-link']) ?></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+                </div>
+                <!-- Right /////-->
+

@@ -1,0 +1,76 @@
+<?php
+/**
+ * @var \Phalcon\Mvc\View\Engine\Php $this
+ */
+?>
+
+<div class="row">
+    <nav>
+        <ul class="pager">
+            <li class="previous"><?php echo $this->tag->linkTo(["user", "Back"]) ?></li>
+        </ul>
+    </nav>
+</div>
+
+<div class="page-header">
+    <h1>
+        Edit user
+    </h1>
+</div>
+
+<?php echo $this->getContent(); ?>
+
+<?php
+    echo $this->tag->form(
+        [
+            "user/save",
+            "autocomplete" => "off",
+            "class" => "form-horizontal",
+            "enctype" => "multipart/form-data"
+        ]
+    );
+?>
+
+<!--input form-->
+<div class="form-group">
+    <label for="fieldFirstName" class="col-sm-2 control-label">First Name</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["first_name", "size" => 30, "class" => "form-control", "id" => "fieldFirstName"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldLastName" class="col-sm-2 control-label">Last Name</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["last_name", "size" => 30, "class" => "form-control", "id" => "fieldLastName"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldEmail" class="col-sm-2 control-label">Email</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["email", "size" => 30, "class" => "form-control", "id" => "fieldEmail"]) ?>
+    </div>
+</div>
+
+<div>
+<div><img class="img-responsive center-block" 
+		        height="90 vh" width="180 vw" 
+		        src="data:image/jpeg;base64,<?php echo $user->getProfilePic() ?>">
+            </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldImageFile" class="col-sm-2 control-label">Update Profile Picture</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->fileField(["imageFile", "size" => 30, "class" => "form-control", "id" => "fieldImageFile"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <?php echo $this->tag->submitButton(["Save", "class" => "btn btn-default"]) ?>
+    </div>
+</div>
+<?php echo $this->tag->hiddenField("user_id") ?><?php echo $this->tag->hiddenField("verification") ?><?php echo $this->tag->hiddenField("username") ?>
+<?php echo $this->tag->endForm(); ?>

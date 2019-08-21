@@ -1,0 +1,118 @@
+<?php
+/**
+ * @var \Phalcon\Mvc\View\Engine\Php $this
+ */
+?>
+
+<?php use Phalcon\Tag; ?>
+<?php use lifelog\blog; ?>
+<?php use lifelog\user; ?>
+<?php use lifelog\comment; ?>
+<?php echo $this->getContent(); ?>
+<?php $session = \Phalcon\Di::getDefault()->get('session'); $auth = $this->session->get('auth'); ?>
+<?php $blog = Blog::findFirstByblog_id($blog_id); ?>
+<?php $user = user::findfirst($auth['user_id']); ?>
+<?php $b = $blog->getcreatedby();
+      $Bloger = user::findfirst($b); ?>
+<?php $cm = $blog->comment;
+         //Hard coded array ------ Need Work
+?>
+    <div class="container-fluid gedf-wrapper ">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+						<div class="h7"><img class="img-responsive center-block" 
+		        height="90 vh" width="180 vw" 
+		        src="data:image/jpeg;base64,<?php echo $Bloger->getProfilePic() ?>">
+                        </div>
+                        <div class="h5"><h4>Created By: </h4><?php echo $Bloger->getusername()?></div>
+                        <div class="h7 text-muted"><?php echo $Bloger->getfirstname() . " " . $Bloger->getlastname() ?></div>
+                    </div>
+                </div>
+            </div>
+            
+<div class="container col-md-9 gedf-main">
+    <div class="well"> 
+        <div class="row">
+             <div class="col-md-12">
+                 <div class="row hidden-md hidden-lg"><h1 class="text-center" ><?php echo $blog->getTitle() ?></h1></div>
+                     
+                 <div ><img class="rounded-circle d-flex justify-content-between align-items-center" width="500" 
+										src="data:image/jpeg;base64,<?php echo $blog->getBlogImage() ?>"></div>
+                 <div class="">
+                     <h1><?php echo $blog->getTitle() ?></h1>
+                     <hr>
+                     <small><?php echo $blog->getBlogCreatedOn() ?></small><br>
+                     <small><strong><?php echo $blog->user->getfirstname() . " " . $blog->user->getlastname() ?></strong></small>
+                     <hr>
+                     <p>
+                     <?php echo $blog->getblogcontent() ?>
+                     </p>
+                     </div>
+ <!--  Comments -->
+                     <div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h2 class="page-header">Comments</h2>
+        <section class="comment-list">
+         <?php if ($auth['role'] != 'Registered User' && $auth['role'] != 'Admin'){
+        echo  "<h3>Please login to post a comment</h3>";
+        }
+        else{
+    echo $this->tag->form(
+        [
+            "comment/create/" . $blog_id,
+            "autocomplete" => "off",
+            "class" => "form-horizontal"
+        ]
+        );
+       ?>
+       <div class="form-group">
+    <label for="fieldCommentData" class="col-sm-2 control-label">Your Comments</label>
+    <span class="col-sm-7">
+        <?php echo $this->tag->textField(["comment_data", "size" => 30, "class" => "form-control", "id" => "fieldCommentData"]) ?>
+        <span class="form-group">
+    <span class="col-sm-2">
+        <?php echo $this->tag->submitButton(["Post", "class" => "btn btn-default"]) ?>
+    </span>
+     </span>
+    </span>
+     </div>
+      <?php } ?>
+     <?php echo $this->tag->endForm(); ?>
+         <?php foreach($cm as $c){
+          $comm = $c->comment_id;
+      $comment = comment::findfirst($comm);
+      $commenter_id = $comment->getcommentby();
+      $commenter = user::findfirst($commenter_id);
+           ?>
+          <article class="row">
+            <div class="col-md-2 col-sm-2 hidden-xs">
+              <figure class="thumbnail">
+                <img src="data:image/jpeg;base64,<?=$commenter->getprofilepic()?>" />
+                <figcaption class="text-center"><?=$commenter->getusername()?></figcaption>
+              </figure>
+            </div>
+            <div class="col-md-10 col-sm-10">
+              <div class="panel panel-default arrow left">
+                <div class="panel-body">
+                  <header class="text-left">
+                    <div class="comment-user"><i class="fa fa-user"></i><?=$commenter->getfirstname() . " " . $commenter->getlastname()?></div>
+                    <time class="comment-date" ><i class="fa fa-clock-o"></i><?=$comment->getcommentedon()?></time>
+                  </header>
+                  <div class="comment-post">
+                    <p>
+                      <?=$comment->getcommentdata() ?>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+         <?php } ?>
+             </div>
+        </div>
+    </div>
+    <?php echo $this->tag->hiddenField("for_blog") ?>
+</div>
